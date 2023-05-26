@@ -1,0 +1,3 @@
+/home/hoea2/grin/build/CMakeFiles/main.dir
+/home/hoea2/grin/build/CMakeFiles/edit_cache.dir
+/home/hoea2/grin/build/CMakeFiles/rebuild_cache.dir
