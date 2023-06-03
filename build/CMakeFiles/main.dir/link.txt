@@ -1,1 +1,1 @@
-/usr/bin/g++ -Wall -Wextra -Wpedantic -Wfatal-errors -ggdb -g CMakeFiles/main.dir/src/main.cpp.o -o main 
+/usr/bin/g++ -Wall -Wextra -Wpedantic -Wfatal-errors -ggdb -fsanitize=address,undefined,leak -fsanitize-recover=all -g -fsanitize=address,undefined,leak -fsanitize-recover=all CMakeFiles/main.dir/src/main.cpp.o -o main 

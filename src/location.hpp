@@ -1,12 +1,16 @@
 #ifndef LOCATION_HPP
 #define LOCATION_HPP
 
+#include <iosfwd>
+
 struct GrinLocation{
     int line;
     int column;
-};
-inline std::ostream & operator<<(std::ostream & out, const GrinLocation & loc);
 
-inline std::ostream & operator>>(std::ostream & in, GrinLocation & loc);
+    friend std::ostream & operator<<(std::ostream & out, const GrinLocation & loc);
+
+    friend std::istream & operator>>(std::istream & in, GrinLocation & loc);
+
+};
 
 #endif
