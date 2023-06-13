@@ -6,27 +6,36 @@
 
 int main()
 {
-//    std::cout << "C++ Boost version: " 
-//          << BOOST_VERSION / 100000
-//          << "."
-//          << BOOST_VERSION / 100 % 1000
-//          << "."
-//          << BOOST_VERSION % 100 
-//          << std::endl;
-
-   std::variant<int, std::string> hello{"hello world"};
-   
-   if (std::holds_alternative<int>(hello))
-   {
-      std::cout << "int " << std::get<int>(hello) << " was in hello" << std::endl;
-   }
-   else if (std::holds_alternative<std::string>(hello))
-   {
-      std::cout << "string " << std::get<std::string>(hello) << " was in hello" << std::endl;
-   }
-
+     
    return 0;
 }
+
+
+
+
+// int main()
+// {
+// //    std::cout << "C++ Boost version: " 
+// //          << BOOST_VERSION / 100000
+// //          << "."
+// //          << BOOST_VERSION / 100 % 1000
+// //          << "."
+// //          << BOOST_VERSION % 100 
+// //          << std::endl;
+
+//    std::variant<int, std::string> hello{"hello world"};
+   
+//    if (std::holds_alternative<int>(hello))
+//    {
+//       std::cout << "int " << std::get<int>(hello) << " was in hello" << std::endl;
+//    }
+//    else if (std::holds_alternative<std::string>(hello))
+//    {
+//       std::cout << "string " << std::get<std::string>(hello) << " was in hello" << std::endl;
+//    }
+
+//    return 0;
+// }
 
 
 

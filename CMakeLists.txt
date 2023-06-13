@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# copy this format to add more individual build files
 # set(PARSING_SRC_FILES
 #   src/parsing.cpp
 #   src/parsing.hpp
@@ -21,6 +22,27 @@ set(MAIN_SRC_FILES
   src/main.cpp
 )
 add_executable(main ${MAIN_SRC_FILES} src/main.cpp)
+
+find_package(GTest)
+if (GTest_FOUND)
+    add_library(gtestmain OBJECT
+        gtest/gtestmain.cpp
+    )
+    target_include_directories(gtestmain PUBLIC src ${GTEST_INCLUDE_DIRS})
+    target_link_libraries(gtestmain PUBLIC ${GTEST_LIBRARIES})
+
+    add_executable(parsing_gtests
+    gtest/parsing_gtests.cpp
+    )
+    target_link_libraries(parsing_gtests PRIVATE gtestmain)
+    
+    # copy this format to add more gtests
+    # add_executable(parsing_gtests
+    #     gtest/parsing_gtests.cpp
+    # )
+    # target_link_libraries(parsing_gtests PRIVATE gtestmain)
+
+endif()
 
 # set(BOOST_REQUIRED_COMPONENTS
 #     filesystem

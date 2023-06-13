@@ -23,7 +23,7 @@ public:
 
     GrinLocation location();
 
-    bool operator==(const GrinToken & other);
+    bool operator==(const GrinToken & other) const = default;
 
 private:
 
