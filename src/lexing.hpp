@@ -1,21 +1,34 @@
 #ifndef LEXING_HPP
 #define LEXING_HPP
 
-#include <iostream>
-#include <map>
+#include <iosfwd>
+#include <exception>
+#include <unordered_map>
 #include <set>
+#include <string>
 #include <vector>
 #include <variant>
+#include <utility>
 
 #include "token.hpp"
 #include "location.hpp" 
 
-void raise_error(std::string msg);
+class LexingError : public std::exception {
+public:
+    LexingError(const std::string & msg, const GrinLocation & loc);
+    GrinLocation location() const;
+    virtual const char* what() const noexcept override;
 
-std::vector<GrinToken> to_tokens(std::string linen, int line_number);
+private:
+    std::string message;
+    GrinLocation error_location;
+};
 
 
 
+void raise_error(const std::string & msg, const GrinLocation & loc);
+
+std::vector<GrinToken> to_tokens(const std::string & line, int line_number);
 
 
 #endif
