@@ -14,6 +14,36 @@ The following will be a guide to the language and its functionalities:
 
 ## Arithmetic:
 
+Basic arithmetic operations (addition, subtraction, multiplication, division) can be completed.
+
+Addition:
+
+`ADD X Y`
+
+Addition can be performed between any of the following combinations:
+
+int + int; int + double; double + int; double + double; string + string
+
+Subtraction:
+
+`SUB X Y`
+
+Subtraction can be performed between any of the following combinations:
+
+int - int; int - double; double - int; double - double
+
+Multiplication:
+
+`MULT X Y`
+
+Multiplication can be performed between any of the following combinations:
+
+int * int; int * double; double * int; double * double
+
+Division:
+
+`DIV X Y`
+
 ## Control Flow:
 
 ## Conditionally Altering Control Flow:
