@@ -14,13 +14,13 @@ The following will be a guide to the language and its functionalities:
 
 ## Arithmetic:
 
-Basic arithmetic operations (addition, subtraction, multiplication, division) can be completed.
+Basic arithmetic operations (addition, subtraction, multiplication, division) are supported.
 
 Addition:
 
 `ADD X Y`
 
-Addition can be performed between any of the following combinations:
+Addition can be performed between any of the following combinations of types:
 
 int + int; int + double; double + int; double + double; string + string
 
@@ -28,7 +28,7 @@ Subtraction:
 
 `SUB X Y`
 
-Subtraction can be performed between any of the following combinations:
+Subtraction can be performed between any of the following combinations of types:
 
 int - int; int - double; double - int; double - double
 
@@ -36,7 +36,7 @@ Multiplication:
 
 `MULT X Y`
 
-Multiplication can be performed between any of the following combinations:
+Multiplication can be performed between any of the following combinations of types:
 
 int * int; int * double; double * int; double * double
 
@@ -44,7 +44,7 @@ Division:
 
 `DIV X Y`
 
-Division can be performed between any of the following combinations:
+Division can be performed between any of the following combinations of types:
 
 int / int; int / double; double / int; double / double
 
@@ -53,3 +53,6 @@ int / int; int / double; double / int; double / double
 ## Conditionally Altering Control Flow:
 
 ## Spacing:
+
+This language is unique because I have tokenized all of the significant inputs.
+As a result, the language ignores excessive whitespace -- but a minimum of one space is required to separate tokens such as `LET` and `DIV`.
