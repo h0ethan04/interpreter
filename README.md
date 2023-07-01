@@ -15,6 +15,7 @@ The following will be a guide to the language and its functionalities:
 ## Arithmetic:
 
 Basic arithmetic operations (addition, subtraction, multiplication, division) are supported.
+Operations between like types preserves that type; otherwise, a widening conversion will be applied to the smaller data type. 
 
 Addition:
 
@@ -55,4 +56,4 @@ int / int; int / double; double / int; double / double
 ## Spacing:
 
 This language is unique because I have tokenized all of the significant inputs.
-As a result, the language ignores excessive whitespace -- but a minimum of one space is required to separate tokens such as `LET` and `DIV`.
+As a result, the language ignores excessive whitespace -- a minimum of one space is required to separate tokens such as `LET` and `DIV`.
