@@ -44,6 +44,10 @@ Division:
 
 `DIV X Y`
 
+Division can be performed between any of the following combinations:
+
+int / int; int / double; double / int; double / double
+
 ## Control Flow:
 
 ## Conditionally Altering Control Flow:
