@@ -6,6 +6,11 @@ To prevent academic integrity violations I will not publicize the name of the la
 
 The following will be a guide to the language and its functionalities:
 
+## Types:
+
+There are three data types that this language supports: literal integers, literal doubles, and string literals. 
+Literal strings are indicated by enclosing *single* quotes `'` while integers and doubles are represented as normal.
+
 ## Input/Output:
 
 ## Variables:
