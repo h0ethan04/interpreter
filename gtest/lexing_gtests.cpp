@@ -62,3 +62,22 @@ TEST(LexingTests, DetectsLiterals) {
     assertOneToken("0.5", GrinTokenKind(GrinTokenKindName::LITERAL_DOUBLE, GrinTokenCategory::LITERAL_VALUE), "0.5", 0.5);
     assertOneToken("-0.1", GrinTokenKind(GrinTokenKindName::LITERAL_DOUBLE, GrinTokenCategory::LITERAL_VALUE), "-0.1", -0.1);
 }
+
+TEST(LexingTests, LexesMultipleTokens) {
+    auto tokens = to_tokens("LET BOO 3", 1);
+    std::variant<int, double, std::string> let_val("LET");
+    std::variant<int, double, std::string> boo_val("BOO");
+    std::variant<int, double, std::string> three_val(3);
+    ASSERT_EQ(tokens.size(), 3);
+    ASSERT_EQ(tokens.at(0).text(), "LET");
+    ASSERT_EQ(tokens.at(0).value(), let_val);
+    ASSERT_EQ(tokens.at(1).text(), "BOO");
+    ASSERT_EQ(tokens.at(1).value(), boo_val);
+    ASSERT_EQ(tokens.at(2).text(), "3");
+    ASSERT_EQ(tokens.at(2).value(), three_val);
+    ASSERT_EQ(std::get<int>(tokens.at(2).value()), 3);
+
+    ASSERT_EQ(tokens.at(0).kind(), GrinTokenKind(GrinTokenKindName::LET, GrinTokenCategory::KEYWORD));
+    ASSERT_EQ(tokens.at(1).kind(), GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER));
+    ASSERT_EQ(tokens.at(2).kind(), GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE));
+}

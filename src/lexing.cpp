@@ -31,13 +31,10 @@ std::vector<GrinToken> to_tokens(const std::string & line, int line_number) {
                         return GrinToken(kind, value, line.substr(start, index-start), GrinLocation(line_number, start+1));
                       };
     while(true) {
-        // thornton's version
-        // while(index < len && line[index] == ' ') {
-        //     ++index;
-        // }
-        // c++ alternative
-        index = line.substr(start).find_first_not_of(" \t\n") + index;
-
+        while(index < len && line[index] == ' ') {
+            ++index;
+        }
+        
         if (index == len || index < 0) {
             break;
         }
