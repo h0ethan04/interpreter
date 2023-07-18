@@ -6,6 +6,7 @@
 #include <variant>
 #include <unordered_map>
 #include <utility>
+#include <iosfwd>
 
 
 #include "location.hpp"
@@ -19,6 +20,8 @@ enum struct GrinTokenCategory {
     LITERAL_VALUE = 4,
     PUNCTUATION = 5
  };
+
+extern const char* token_cat_text[];
 
 enum struct GrinTokenKindName {
     ADD = 1,
@@ -47,6 +50,8 @@ enum struct GrinTokenKindName {
     RETURN = 24,
     SUB = 25
  };
+
+extern const char* token_kind_text[];
 
 struct GrinTokenKind {
     // Identifies a kind of Grin token
@@ -78,6 +83,8 @@ public:
     GrinLocation location() const;
 
     bool operator==(const GrinToken & other) const = default;
+
+    friend std::ostream & operator<<(std::ostream & ostream, const GrinToken & token);
 
 private:
 

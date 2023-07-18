@@ -28,3 +28,8 @@ TEST(TokenTests, MapLookup) {
     ASSERT_EQ(TOKEN_MAP["ADD"].first, GrinTokenKindName::ADD);
     ASSERT_EQ(TOKEN_MAP[std::string("ADD")].first, GrinTokenKindName::ADD);
 }
+
+TEST(TokenTests, ToString) {
+    const char* add = token_kind_text[static_cast<int>(GrinTokenKindName::ADD) - 1];
+    ASSERT_STREQ("ADD", add);
+}
