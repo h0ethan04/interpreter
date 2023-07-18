@@ -15,7 +15,7 @@ const char* LexingError::what() const noexcept {
 }
 
 // used to throw Lexing errors
-void raise_error(const std::string & msg, const GrinLocation & loc) {
+void raise_lexing_error(const std::string & msg, const GrinLocation & loc) {
     throw LexingError(msg, loc);
 }
 
@@ -67,7 +67,7 @@ std::vector<GrinToken> to_tokens(const std::string & line, int line_number) {
             }
 
             if (index == len) {
-                raise_error("Newline in string literal", GrinLocation(line_number, index));
+                raise_lexing_error("Newline in string literal", GrinLocation(line_number, index));
             }
             ++index;
             line_to_tokens.push_back(make_token(GrinTokenKind(GrinTokenKindName::LITERAL_STRING, GrinTokenCategory::LITERAL_VALUE),
@@ -83,7 +83,7 @@ std::vector<GrinToken> to_tokens(const std::string & line, int line_number) {
                 ++digits;
             }
             if (negated && !digits) {
-                raise_error("Negation must be followed by at least one digit", GrinLocation(line_number, index));
+                raise_lexing_error("Negation must be followed by at least one digit", GrinLocation(line_number, index));
             }
             else if (index < len && line[index] == '.') {
                 ++index;
@@ -135,7 +135,7 @@ std::vector<GrinToken> to_tokens(const std::string & line, int line_number) {
             }
         }
         else {
-            raise_error("Invalid character", GrinLocation(line_number, index));
+            raise_lexing_error("Invalid character", GrinLocation(line_number, index));
         }
     }
     
