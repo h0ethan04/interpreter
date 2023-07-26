@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "lexing.hpp"
 #include "parsing.hpp"
 
 // Parsing Error
