@@ -40,6 +40,16 @@ add_library(parsing_objects OBJECT
   src/parsing.cpp
 )
 
+add_library(preprocessing_objects OBJECT
+  src/preprocessing.hpp
+  src/preprocessing.cpp
+)
+
+add_library(arithmetic_objects OBJECT
+  src/arithmetic.hpp
+  src/arithmetic.cpp
+)
+
 
 find_package(GTest)
 if (GTest_FOUND)
@@ -70,6 +80,21 @@ if (GTest_FOUND)
     )
     target_link_libraries(parsing_gtests PRIVATE gtestmain)
 
+    add_executable(preprocessing_gtests
+      gtest/preprocessing_gtests.cpp
+      $<TARGET_OBJECTS:lexing_objects>
+      $<TARGET_OBJECTS:parsing_objects>
+      $<TARGET_OBJECTS:preprocessing_objects>
+      $<TARGET_OBJECTS:token_objects>
+    )
+    target_link_libraries(preprocessing_gtests PRIVATE gtestmain)
+
+    add_executable(arithmetic_gtests
+      gtest/arithmetic_gtests.cpp
+      $<TARGET_OBJECTS:arithmetic_objects>
+      $<TARGET_OBJECTS:token_objects>
+    )
+    target_link_libraries(arithmetic_gtests PRIVATE gtestmain)
     # copy this format to add more gtests
     # add_executable(parsing_gtests
     #     gtest/parsing_gtests.cpp
