@@ -45,11 +45,6 @@ add_library(preprocessing_objects OBJECT
   src/preprocessing.cpp
 )
 
-add_library(arithmetic_objects OBJECT
-  src/arithmetic.hpp
-  src/arithmetic.cpp
-)
-
 add_library(comparison_objects OBJECT
   src/comparison.hpp
   src/comparison.cpp
@@ -102,15 +97,6 @@ if (GTest_FOUND)
     )
     target_link_libraries(preprocessing_gtests PRIVATE gtestmain)
 
-    add_executable(arithmetic_gtests
-      gtest/arithmetic_gtests.cpp
-      $<TARGET_OBJECTS:arithmetic_objects>
-      $<TARGET_OBJECTS:lexing_objects>
-      $<TARGET_OBJECTS:parsing_objects>
-      $<TARGET_OBJECTS:preprocessing_objects>
-      $<TARGET_OBJECTS:token_objects>
-    )
-    target_link_libraries(arithmetic_gtests PRIVATE gtestmain)
 
     add_executable(comparison_gtests
       gtest/comparison_gtests.cpp
@@ -124,7 +110,6 @@ if (GTest_FOUND)
 
     add_executable(interpreter_gtests
       gtest/interpreter_gtests.cpp
-      $<TARGET_OBJECTS:arithmetic_objects>
       $<TARGET_OBJECTS:comparison_objects>
       $<TARGET_OBJECTS:interpreter_objects>
       $<TARGET_OBJECTS:lexing_objects>
