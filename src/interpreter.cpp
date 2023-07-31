@@ -58,11 +58,35 @@ var_map interpret_tokens(std::vector<std::string> & lines) {
     };
 
     auto sub_tokens = [&variables](const GrinToken & base, data_variant source) {
-        if (std::holds_alternative<int>(variables[base.text()])) {
-
+        data_variant base_value;
+        if (variables.contains(base.text())) {
+            base_value = variables[base.text()];
         }
-        else if (std::holds_alternative<double>(variables[base.text()])) {
+        else {
+            base_value = 0;
+        }
 
+        if (std::holds_alternative<int>(base_value)) {
+            if (std::holds_alternative<int>(source)) {
+                return data_variant(std::get<int>(base_value) - std::get<int>(source));
+            }
+            else if (std::holds_alternative<double>(source)) {
+                return data_variant(std::get<int>(base_value) - std::get<double>(source));
+            }
+            else {
+                raise_ArithmeticError("Cannot subtract type string from base type int", base.location());
+            }
+        }
+        else if (std::holds_alternative<double>(base_value)) {
+            if (std::holds_alternative<int>(source)) {
+                return data_variant(std::get<double>(base_value) - std::get<int>(source));
+            }
+            else if (std::holds_alternative<double>(source)) {
+                return data_variant(std::get<double>(base_value) - std::get<double>(source));
+            }
+            else {
+                raise_ArithmeticError("Cannot subtract type string from base type double", base.location());
+            }
         }
         else {
             raise_ArithmeticError("Cannot subtract non-numeric types", base.location());
@@ -70,11 +94,23 @@ var_map interpret_tokens(std::vector<std::string> & lines) {
     };
 
     auto mult_tokens = [&variables](const GrinToken & base, data_variant source) {
-
+        data_variant base_value;
+        if (variables.contains(base.text())) {
+            base_value = variables[base.text()];
+        }
+        else {
+            base_value = 0;
+        }
     };
 
     auto div_tokens = [&variables](const GrinToken & base, data_variant source) {
-
+        data_variant base_value;
+        if (variables.contains(base.text())) {
+            base_value = variables[base.text()];
+        }
+        else {
+            base_value = 0;
+        }
     };
 
 
@@ -107,7 +143,17 @@ var_map interpret_tokens(std::vector<std::string> & lines) {
             }
         }
         else if (first_token.kind().kind == GrinTokenKindName::SUB) {
-
+            if (line[2].kind().kind == GrinTokenKindName::IDENTIFIER) {
+                if (variables.contains(line[2].text())) {
+                    variables[line[1].text()] = sub_tokens(line[1], variables[line[2].text()]);
+                }
+                else {
+                    variables[line[1].text()] = sub_tokens(line[1], 0);
+                }
+            }
+            else {
+                variables[line[1].text()] = sub_tokens(line[1], line[2].value());
+            }
         }
         else if (first_token.kind().kind == GrinTokenKindName::MULT) {
 

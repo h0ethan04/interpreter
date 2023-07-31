@@ -129,14 +129,57 @@ TEST(AdditionTests, AddStringVariable) {
     ASSERT_EQ(interpret_tokens(lines), var);
 }
 
-TEST(AdditionTests, AddIntString) {
+TEST(AdditionTests, AddIntStringVariable) {
     std::vector<std::string> lines{"LET A 1", "LET B ' latte'", "ADD A B", "."};
     ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
 }
 
-TEST(AdditionTests, AddDoubleString) {
+TEST(AdditionTests, AddDoubleStringVariable) {
     std::vector<std::string> lines{"LET A 1.1", "LET B ' latte'", "ADD A B", "."};
     ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
 }
 
+}
+
+namespace SubTests{
+    // Subtraction Tests
+TEST(SubtractionTests, SubtractInt) {
+    std::vector<std::string> lines{"LET A 1", "SUB A 2", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = -1;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(SubtractionTests, SubtractDouble) {
+    std::vector<std::string> lines{"LET A 1.1", "SUB A 2.2", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = -1.1;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(SubtractionTests, SubtractIntVariable) {
+    std::vector<std::string> lines{"LET A 1", "LET B 2", "SUB A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = -1;
+    var["B"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(SubtractionTests, SubtractDoubleVariable) {
+    std::vector<std::string> lines{"LET A 1.1", "LET B 2.2", "SUB A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = -1.1;
+    var["B"] = 2.2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(SubtractionTests, SubtractString) {
+    std::vector<std::string> lines{"LET A 2", "SUB A 'TARO'", "."};
+    ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
+}
+
+TEST(SubtractionTests, SubtractStringVariable) {
+    std::vector<std::string> lines{"LET A 'TARO'", "LET B 'MILK'", "SUB A B", "."};
+    ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
+}
 }
