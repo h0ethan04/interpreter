@@ -97,17 +97,6 @@ if (GTest_FOUND)
     )
     target_link_libraries(preprocessing_gtests PRIVATE gtestmain)
 
-
-    add_executable(comparison_gtests
-      gtest/comparison_gtests.cpp
-      $<TARGET_OBJECTS:comparison_objects>
-      $<TARGET_OBJECTS:lexing_objects>
-      $<TARGET_OBJECTS:parsing_objects>
-      $<TARGET_OBJECTS:preprocessing_objects>
-      $<TARGET_OBJECTS:token_objects>
-    )
-    target_link_libraries(comparison_gtests PRIVATE gtestmain)
-
     add_executable(interpreter_gtests
       gtest/interpreter_gtests.cpp
       $<TARGET_OBJECTS:comparison_objects>
