@@ -10,6 +10,6 @@
 
 std::vector<std::string> read_input(std::istream & in);
 
-std::map<std::string, int> map_labels(std::vector<std::vector<GrinToken>> tokens);
+std::map<std::string, int> map_labels(std::vector<std::vector<GrinToken>> & tokens);
 
 #endif
