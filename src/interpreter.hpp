@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "arithmetic.hpp"
 #include "comparison.hpp"
 #include "preprocessing.hpp"
 #include "token.hpp"
