@@ -183,3 +183,137 @@ TEST(SubtractionTests, SubtractStringVariable) {
     ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
 }
 }
+
+namespace MultTests{
+    // Multiplication Tests
+
+TEST(MultiplicationTests, MultiplyInt) {
+    std::vector<std::string> lines{"LET A 1", "MULT A 2", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(MultiplicationTests, MultiplyDouble) {
+    std::vector<std::string> lines{"LET A 1.2", "MULT A 0.5", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 0.6;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(MultiplicationTests, MultiplyIntString) {
+    std::vector<std::string> lines{"LET A 'Taro'", "MULT A 2", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = "TaroTaro";
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(MultiplicationTests, MultiplyDoubleString) {
+    std::vector<std::string> lines{"LET A 'Taro'", "MULT A 2.1", "."};
+    ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
+}
+
+TEST(MultiplicationTests, MultiplyNegIntString) {
+    std::vector<std::string> lines{"LET A 'Taro'", "MULT A -1", "."};
+    ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
+}
+
+TEST(MultiplicationTests, MultiplyStringDouble) {
+    std::vector<std::string> lines{"LET A 2.1", "MULT A 'TARO'", "."};
+    ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
+}
+
+TEST(MultiplicationTests, MultiplyIntVariable) {
+    std::vector<std::string> lines{"LET A 1", "LET B 2", "MULT A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 2;
+    var["B"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(MultiplicationTests, MultiplyDoubleVariable) {
+    std::vector<std::string> lines{"LET A 1.4", "LET B 2.5", "MULT A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 3.5;
+    var["B"] = 2.5;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(MultiplicationTests, MultiplyStringVariable) {
+    std::vector<std::string> lines{"LET A 'TARO'", "LET B 2", "MULT A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = "TAROTARO";
+    var["B"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+}
+
+namespace DivTests{
+    // Division Tests
+TEST(DivisionTests, DivideInt) {
+    std::vector<std::string> lines{"LET A 4", "DIV A 2", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(DivisionTests, DivideDouble) {
+    std::vector<std::string> lines{"LET A 1.5", "DIV A 2", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 0.75;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(DivisionTests, DivideString) {
+    std::vector<std::string> lines{"LET A 'TARO'", "DIV A 2", "."};
+    ASSERT_THROW(interpret_tokens(lines), ArithmeticError);
+}
+
+TEST(DivisionTests, DivideIntVariable) {
+    std::vector<std::string> lines{"LET A 1", "LET B 2", "DIV A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 0;
+    var["B"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(DivisionTests, DivideFloatVariable) {
+    std::vector<std::string> lines{"LET A 1.5", "LET B 2", "DIV A B", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 0.75;
+    var["B"] = 2;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+}
+
+namespace GoToTests {
+    // GOTO tests
+
+TEST(GotoTests, JumpForwards) {
+    std::vector<std::string> lines{"LET A 4", "GOTO 2 IF A < 5", "DIV A 2", "DIV A 4", "GOTO 11 IF A <= -11", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 1;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(GotoTests, JumpOne) {
+    std::vector<std::string> lines{"LET A 4", "GOTO 1", "DIV A 2", "DIV A 4", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 0;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+TEST(GotoTests, JumpBackwards) {
+    std::vector<std::string> lines{"LET A 4", "GOTO 2 IF 'A' < 'B'",  "END", "DIV A 4", "GOTO -2 IF 5 > A", "ADD A 11", "."};
+    std::map<std::string, data_variant> var{};
+    var["A"] = 1;
+    ASSERT_EQ(interpret_tokens(lines), var);
+}
+
+}
+
+namespace GoSubTests {
+
+}
