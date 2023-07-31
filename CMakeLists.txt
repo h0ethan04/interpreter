@@ -50,7 +50,20 @@ add_library(arithmetic_objects OBJECT
   src/arithmetic.cpp
 )
 
+add_library(comparison_objects OBJECT
+  src/comparison.hpp
+  src/comparison.cpp
+)
 
+add_library(interpreter_objects OBJECT
+  src/interpreter.hpp
+  src/interpreter.cpp
+)
+
+add_library(error_objects OBJECT
+  src/runtime_errors.hpp
+  src/runtime_errors.cpp
+)
 find_package(GTest)
 if (GTest_FOUND)
     add_library(gtestmain OBJECT
@@ -92,9 +105,35 @@ if (GTest_FOUND)
     add_executable(arithmetic_gtests
       gtest/arithmetic_gtests.cpp
       $<TARGET_OBJECTS:arithmetic_objects>
+      $<TARGET_OBJECTS:lexing_objects>
+      $<TARGET_OBJECTS:parsing_objects>
+      $<TARGET_OBJECTS:preprocessing_objects>
       $<TARGET_OBJECTS:token_objects>
     )
     target_link_libraries(arithmetic_gtests PRIVATE gtestmain)
+
+    add_executable(comparison_gtests
+      gtest/comparison_gtests.cpp
+      $<TARGET_OBJECTS:comparison_objects>
+      $<TARGET_OBJECTS:lexing_objects>
+      $<TARGET_OBJECTS:parsing_objects>
+      $<TARGET_OBJECTS:preprocessing_objects>
+      $<TARGET_OBJECTS:token_objects>
+    )
+    target_link_libraries(comparison_gtests PRIVATE gtestmain)
+
+    add_executable(interpreter_gtests
+      gtest/interpreter_gtests.cpp
+      $<TARGET_OBJECTS:arithmetic_objects>
+      $<TARGET_OBJECTS:comparison_objects>
+      $<TARGET_OBJECTS:interpreter_objects>
+      $<TARGET_OBJECTS:lexing_objects>
+      $<TARGET_OBJECTS:parsing_objects>
+      $<TARGET_OBJECTS:preprocessing_objects>
+      $<TARGET_OBJECTS:error_objects>
+      $<TARGET_OBJECTS:token_objects>
+    )
+    target_link_libraries(interpreter_gtests PRIVATE gtestmain)
     # copy this format to add more gtests
     # add_executable(parsing_gtests
     #     gtest/parsing_gtests.cpp
