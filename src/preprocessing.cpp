@@ -20,7 +20,7 @@ std::vector<std::string> read_input(std::istream & in) {
     return lines;
 }
 
-std::map<std::string, int> map_labels(std::vector<std::vector<GrinToken>> & tokens) {
+std::map<std::string, int> map_labels(const std::vector<std::vector<GrinToken>> & tokens) {
     std::map<std::string, int> labels{};
     for (int i = 0; i < tokens.size(); ++i) {
         if (tokens[i].size() > 2 

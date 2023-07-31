@@ -11,7 +11,7 @@
 typedef std::variant<int, double, std::string> data_variant;
 typedef std::map<std::string, data_variant> var_map;
 
-var_map interpret_tokens(std::vector<std::string> & lines) {
+var_map interpret_tokens(const std::vector<std::string> & lines) {
     std::vector<std::vector<GrinToken>> tokens{parse(lines)};
     std::map<std::string, int> labels{map_labels(tokens)};
     std::map<std::string, data_variant> variables{};
