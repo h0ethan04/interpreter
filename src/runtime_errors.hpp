@@ -68,3 +68,17 @@ private:
 };
 
 void raise_ComparisonError(const std::string & msg, const GrinLocation & loc);
+
+
+class InputError : public std::exception {
+public:
+    InputError(const std::string & msg, const GrinLocation & loc);
+    GrinLocation location() const;
+    virtual const char* what() const noexcept override;
+
+private:
+    std::string message;
+    GrinLocation error_location;
+};
+
+void raise_InputError(const std::string & msg, const GrinLocation & loc);

@@ -11,7 +11,7 @@
 typedef std::variant<int, double, std::string> data_variant;
 typedef std::map<std::string, data_variant> var_map;
 
-var_map interpret_tokens(const std::vector<std::string> & lines) {
+var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & in, std::ostream & out) {
     std::vector<std::vector<GrinToken>> tokens{parse(lines)};
     std::map<std::string, int> labels{map_labels(tokens)};
     std::map<std::string, data_variant> variables{};
@@ -190,7 +190,30 @@ var_map interpret_tokens(const std::vector<std::string> & lines) {
         }
     };
 
-
+    auto print_value = [&variables](const GrinToken & token, std::ostream & out) {
+        if (variables.contains(token.text())) {
+            if (std::holds_alternative<int>(variables[token.text()])) {
+                out << std::get<int>(variables[token.text()]) << std::endl;
+            }
+            else if (std::holds_alternative<double>(variables[token.text()])) {
+                out << std::get<double>(variables[token.text()]) << std::endl;
+            }
+            else {
+                out << std::get<std::string>(variables[token.text()]) << std::endl;
+            }
+        }
+        else {
+            if (std::holds_alternative<int>(token.value())) {
+                out << std::get<int>(token.value()) << std::endl;
+            }
+            else if (std::holds_alternative<double>(token.value())) {
+                out << std::get<double>(token.value()) << std::endl;
+            }
+            else {
+                out << std::get<std::string>(token.value()) << std::endl;
+            }
+        }
+    };
 
     auto interpret_line = [&](const std::vector<GrinToken> & line, int & line_number){
         GrinToken first_token = line[0];
@@ -273,7 +296,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines) {
             if (line[1].kind().kind == GrinTokenKindName::IDENTIFIER) {
                 if (variables.contains(line[1].text())) {
                     if (std::holds_alternative<int>(variables[line[1].text()])) {
-                        if (line_number + std::get<int>(variables[line[1].text()]) > tokens.size()) {
+                        if (line_number + std::get<int>(variables[line[1].text()]) > tokens.size() || line_number + std::get<int>(variables[line[1].text()]) < 0) {
                             raise_JumpError("Target line out of bounds", line[1].location());
                         }
                         else {
@@ -297,7 +320,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines) {
                 }
             }
             else if (line[1].kind().kind == GrinTokenKindName::LITERAL_INTEGER) {
-                if (line_number + std::get<int>(line[1].value()) > tokens.size()) {
+                if (line_number + std::get<int>(line[1].value()) > tokens.size() || line_number + std::get<int>(line[1].value()) < 0) {
                     raise_JumpError("Target line out of bounds", line[1].location());
                 }
                 else {
@@ -317,16 +340,102 @@ var_map interpret_tokens(const std::vector<std::string> & lines) {
             }
         }
         else if (first_token.kind().kind == GrinTokenKindName::GOSUB) {
-
+            if (line.size() == 6) {
+                std::vector<GrinToken> temp{};
+                temp.push_back(line[3]);
+                temp.push_back(line[4]);
+                temp.push_back(line[5]);
+                if (!run_comparison(temp, variables)){
+                    return;
+                }
+            }
+            return_line.push_back(line_number);
+            if (line[1].kind().kind == GrinTokenKindName::IDENTIFIER) {
+                if (variables.contains(line[1].text())) {
+                    if (std::holds_alternative<int>(variables[line[1].text()])) {
+                        if (line_number + std::get<int>(variables[line[1].text()]) > tokens.size() || line_number + std::get<int>(variables[line[1].text()]) < 0) {
+                            raise_JumpError("Target line out of bounds", line[1].location());
+                        }
+                        else {
+                            line_number += std::get<int>(variables[line[1].text()]) - 1;
+                        }
+                    }
+                    else if (std::holds_alternative<std::string>(variables[line[1].text()])) {
+                        if (labels.contains(std::get<std::string>(variables[line[1].text()]))) {
+                            line_number = -1 + labels[std::get<std::string>(variables[line[1].text()])];
+                        }
+                        else {
+                            line_number = -1;
+                        }
+                    }
+                    else {
+                        raise_JumpError("Type double is an invalid target", line[1].location());
+                    }
+                }
+                else {
+                    line_number = -1;
+                }
+            }
+            else if (line[1].kind().kind == GrinTokenKindName::LITERAL_INTEGER) {
+                if (line_number + std::get<int>(line[1].value()) > tokens.size() || line_number + std::get<int>(line[1].value()) < 0) {
+                    raise_JumpError("Target line out of bounds", line[1].location());
+                }
+                else {
+                    line_number += std::get<int>(line[1].value()) - 1;
+                }
+            }
+            else if (line[1].kind().kind == GrinTokenKindName::LITERAL_STRING) {
+                if (labels.contains(std::get<std::string>(line[1].value()))) {
+                    line_number = -1 + labels[std::get<std::string>(line[1].value())];
+                }
+                else {
+                    line_number = -1;
+                }
+            }
+            else {
+                raise_JumpError("Invalid target for GOSUB", line[1].location());
+            }
         }
         else if (first_token.kind().kind == GrinTokenKindName::RETURN) {
-            
+            if (return_line.size()) {
+                line_number = return_line.back();
+                return_line.pop_back();
+            }
+            else {
+                raise_ReturnError("Return without matching GOSUB", first_token.location());
+            }
+        }
+        else if (first_token.kind().kind == GrinTokenKindName::PRINT) {
+            print_value(line[1], out);
         }
         else if (first_token.kind().kind == GrinTokenKindName::INNUM) {
+            int integer;
+            double floating;
+            std::string new_value;
+            in >> new_value;
+            try {
+                integer = std::stoi(new_value);
+                floating = std::stod(new_value);
+            }
+            catch(const std::invalid_argument & e) {
+                raise_InputError("Cannot parse numeric value from string", line[1].location());
+            }
+            catch(const std::range_error & e) {
+                raise_InputError("Numeric value was too large", line[1].location());
+            }
+            
+            if (new_value.find(".") == std::string::npos) {
+                variables[line[1].text()] = integer;
+            }
+            else {
+                variables[line[1].text()] = floating;
+            }
 
         }
         else if (first_token.kind().kind == GrinTokenKindName::INSTR) {
-
+            std::string new_variable;
+            std::getline(in, new_variable);
+            variables[line[1].text()] = new_variable;
         }
         else if (first_token.kind().kind == GrinTokenKindName::END) {
             raise_EndError();
@@ -351,7 +460,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines) {
         }
         catch(const EndError& e)
         {
-            break;
+            return variables;
         }
         
     }

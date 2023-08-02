@@ -11,7 +11,8 @@
 //     ^^^^^^^^^^^^^^^^^^^^^^^^^ returns a bool
 // use std::get<X> to get type X from the std::variant
 typedef std::map<std::string, std::variant<int, double, std::string>> var_map;
-var_map interpret_tokens(const std::vector<std::string> & lines);
+var_map interpret_tokens(const std::vector<std::string> & lines,
+                         std::istream & in, std::ostream & out);
 
 
 #endif

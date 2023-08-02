@@ -83,3 +83,19 @@ const char* ComparisonError::what() const noexcept {
 void raise_ComparisonError(const std::string & msg, const GrinLocation & loc) {
     throw ComparisonError(msg, loc);
 }
+
+
+InputError::InputError(const std::string & msg, const GrinLocation & loc)
+    : message(msg), error_location(loc){}
+
+GrinLocation InputError::location() const {
+    return error_location;
+}
+
+const char* InputError::what() const noexcept {
+    return std::string(message + error_location.formatted()).c_str();
+}
+
+void raise_InputError(const std::string & msg, const GrinLocation & loc) {
+    throw InputError(msg, loc);
+}

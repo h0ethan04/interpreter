@@ -13,73 +13,82 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # )
 # add_executable(parsing ${PARSING_SRC_FILES} src/parsing.cpp)
 
-set(EXECUTABLE
-  main
-)
-
-
-set(MAIN_SRC_FILES
-  src/main.cpp
-)
-add_executable(main ${MAIN_SRC_FILES} src/main.cpp)
 
 add_library(token_objects OBJECT
-  src/token.hpp
-  src/token.cpp
-  src/location.hpp
-  src/location.cpp
+src/token.hpp
+src/token.cpp
+src/location.hpp
+src/location.cpp
 )
 
 add_library(lexing_objects OBJECT
-  src/lexing.hpp
-  src/lexing.cpp
+src/lexing.hpp
+src/lexing.cpp
 )
 
 add_library(parsing_objects OBJECT
-  src/parsing.hpp
+src/parsing.hpp
   src/parsing.cpp
-)
-
+  )
+  
 add_library(preprocessing_objects OBJECT
   src/preprocessing.hpp
   src/preprocessing.cpp
-)
-
+  )
+  
 add_library(comparison_objects OBJECT
   src/comparison.hpp
   src/comparison.cpp
-)
-
+  )
+  
 add_library(interpreter_objects OBJECT
   src/interpreter.hpp
   src/interpreter.cpp
-)
-
+  )
+  
 add_library(error_objects OBJECT
   src/runtime_errors.hpp
   src/runtime_errors.cpp
-)
-find_package(GTest)
-if (GTest_FOUND)
-    add_library(gtestmain OBJECT
-      gtest/gtestmain.cpp
-    )
-    target_include_directories(gtestmain PUBLIC src ${GTEST_INCLUDE_DIRS})
-    target_link_libraries(gtestmain PUBLIC ${GTEST_LIBRARIES})
+  )
 
-    add_executable(token_gtests
-      gtest/token_gtests.cpp
-      $<TARGET_OBJECTS:token_objects>
-    )
-    target_link_libraries(token_gtests PRIVATE gtestmain)
-    
-    add_executable(lexing_gtests
+set(EXECUTABLE
+    main
+  )
+  
+  
+set(MAIN_SRC_FILES
+    src/main.cpp
+    $<TARGET_OBJECTS:comparison_objects>
+    $<TARGET_OBJECTS:interpreter_objects>
+    $<TARGET_OBJECTS:lexing_objects>
+    $<TARGET_OBJECTS:parsing_objects>
+    $<TARGET_OBJECTS:preprocessing_objects>
+    $<TARGET_OBJECTS:error_objects>
+    $<TARGET_OBJECTS:token_objects>
+  )
+add_executable(main ${MAIN_SRC_FILES} src/main.cpp)
+
+  find_package(GTest)
+  if (GTest_FOUND)
+  add_library(gtestmain OBJECT
+  gtest/gtestmain.cpp
+  )
+  target_include_directories(gtestmain PUBLIC src ${GTEST_INCLUDE_DIRS})
+  target_link_libraries(gtestmain PUBLIC ${GTEST_LIBRARIES})
+  
+  add_executable(token_gtests
+  gtest/token_gtests.cpp
+  $<TARGET_OBJECTS:token_objects>
+  )
+  target_link_libraries(token_gtests PRIVATE gtestmain)
+  
+  add_executable(lexing_gtests
       gtest/lexing_gtests.cpp
       $<TARGET_OBJECTS:token_objects>
       $<TARGET_OBJECTS:lexing_objects>
-    )
-    target_link_libraries(lexing_gtests PRIVATE gtestmain)
-    
+      )
+      target_link_libraries(lexing_gtests PRIVATE gtestmain)
+      
     add_executable(parsing_gtests
       gtest/parsing_gtests.cpp
       $<TARGET_OBJECTS:token_objects>

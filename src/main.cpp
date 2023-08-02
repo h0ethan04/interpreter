@@ -1,12 +1,14 @@
 // #include <boost/version.hpp>
-#include <iostream>
-#include <iomanip>
 
-#include <variant>
+#include <iostream>
+
+#include "interpreter.hpp"
+#include "preprocessing.hpp"
 
 int main()
 {
-
+   std::vector<std::string> input = read_input(std::cin);
+   interpret_tokens(input, std::cin, std::cout);
    return 0;
 }
 
