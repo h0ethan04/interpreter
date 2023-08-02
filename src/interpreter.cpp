@@ -344,7 +344,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & 
                     line_number = -1 + labels[std::get<std::string>(line[1].value())];
                 }
                 else {
-                    line_number = -1;
+                    raise_JumpError("Target label does not exist", line[1].location());
                 }
             }
             else {
@@ -401,7 +401,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & 
                     line_number = -1 + labels[std::get<std::string>(line[1].value())];
                 }
                 else {
-                    line_number = -1;
+                    raise_JumpError("Target label does not exist", line[1].location());
                 }
             }
             else {
