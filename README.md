@@ -15,8 +15,10 @@ Literal strings are indicated by enclosing *single* quotes `'` while integers an
 
 Input is read from the terminal, and is processed by the interpreter. 
 User input is only read in *after* the user finishes entering their program and indicates it with the terminating symbol, which is `.` (dot).
+
 There are two methods to read input; `INNUM` reads in an integer or float, and `INSTR` reads in a string. 
 Both methods store the read values in a variable parameter that is specified after the corresponding input keyword. 
+
 Output can be printed to the terminal as well, using the `PRINT` keyword followed by the value to be output. 
 If the value following `PRINT` is a variable, it will be evaluated to its corresponding value before being printed to the terminal.
 
