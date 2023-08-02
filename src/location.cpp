@@ -4,7 +4,7 @@
 #include "location.hpp"
 
 std::string GrinLocation::formatted() const {
-    return std::string("Line ") + std::to_string(line) + std::string(" Column ") + std::to_string(column);
+    return std::string(std::string("Line ") + std::to_string(line) + std::string(" Column ") + std::to_string(column));
 }
 
 std::ostream & operator<<(std::ostream & out, const GrinLocation & loc) {

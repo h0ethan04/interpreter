@@ -42,7 +42,7 @@ private:
     std::string message;
     GrinLocation error_location;
 };
-void raise_ReturnError(const std::string & msg, const GrinLocation & loc);
+void raise_ReturnError(const std::string msg, const GrinLocation & loc);
 
 
 class EndError : public std::exception {

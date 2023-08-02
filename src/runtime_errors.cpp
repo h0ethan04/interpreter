@@ -4,14 +4,14 @@
 
 // Arithmetic Error
 ArithmeticError::ArithmeticError(const std::string & msg, const GrinLocation & loc)
-    : message(msg), error_location(loc){}
+    : message(msg + ": " + loc.formatted()), error_location(loc){}
 
 GrinLocation ArithmeticError::location() const {
     return error_location;
 }
 
 const char* ArithmeticError::what() const noexcept {
-    return std::string(message + error_location.formatted()).c_str();
+    return message.c_str();
 }
 
 // used to throw Arithmetic Errors
@@ -22,14 +22,14 @@ void raise_ArithmeticError(const std::string & msg, const GrinLocation & loc) {
 
 // Jump Error
 JumpError::JumpError(const std::string & msg, const GrinLocation & loc) 
-    : message(msg), error_location(loc){}
+    : message(msg + ": " + loc.formatted()), error_location(loc){}
 
 GrinLocation JumpError::location() const {
     return error_location;
 }
 
 const char* JumpError::what() const noexcept {
-    return std::string(message + error_location.formatted()).c_str();
+    return message.c_str();
 }
 
 // used to throw Jump Errors
@@ -40,18 +40,18 @@ void raise_JumpError(const std::string & msg, const GrinLocation & loc) {
 
 // Return Error
 ReturnError::ReturnError(const std::string & msg, const GrinLocation & loc)
-    : message(msg), error_location(loc){}
+    : message(msg + ": " + loc.formatted()), error_location(loc){}
 
 GrinLocation ReturnError::location() const {
     return error_location;
 }
 
 const char* ReturnError::what() const noexcept {
-    return std::string(message + error_location.formatted()).c_str();
+    return message.c_str();
 }
 
 // used to throw Return Errors
-void raise_ReturnError(const std::string & msg, const GrinLocation & loc) {
+void raise_ReturnError(const std::string msg, const GrinLocation & loc) {
     throw ReturnError(msg, loc);
 }
 
@@ -68,14 +68,14 @@ void raise_EndError() {
 
 
 ComparisonError::ComparisonError(const std::string & msg, const GrinLocation & loc)
-    : message(msg), error_location(loc){}
+    : message(msg + ": " + loc.formatted()), error_location(loc){}
 
 GrinLocation ComparisonError::location() const {
     return error_location;
 }
 
 const char* ComparisonError::what() const noexcept {
-    return std::string(message + error_location.formatted()).c_str();
+    return message.c_str();
 }
 
 
@@ -86,14 +86,14 @@ void raise_ComparisonError(const std::string & msg, const GrinLocation & loc) {
 
 
 InputError::InputError(const std::string & msg, const GrinLocation & loc)
-    : message(msg), error_location(loc){}
+    : message(msg + ": " + loc.formatted()), error_location(loc){}
 
 GrinLocation InputError::location() const {
     return error_location;
 }
 
 const char* InputError::what() const noexcept {
-    return std::string(message + error_location.formatted()).c_str();
+    return message.c_str();
 }
 
 void raise_InputError(const std::string & msg, const GrinLocation & loc) {

@@ -4,11 +4,29 @@
 
 #include "interpreter.hpp"
 #include "preprocessing.hpp"
+#include "runtime_errors.hpp"
 
 int main()
 {
    std::vector<std::string> input = read_input(std::cin);
-   interpret_tokens(input, std::cin, std::cout);
+   try{
+      interpret_tokens(input, std::cin, std::cout);
+   }
+   catch (const ArithmeticError & e) {
+      std::cerr << e.what() << std::endl;
+   }
+   catch (const JumpError & e) {
+      std::cerr << e.what() << std::endl;
+   }
+   catch (const ReturnError & e) {
+      std::cout << e.what() << std::endl;
+   }
+   catch (const ComparisonError & e) {
+      std::cerr << e.what() << std::endl;
+   }
+   catch (const InputError & e) {
+      std::cerr << e.what() << std::endl;
+   }
    return 0;
 }
 

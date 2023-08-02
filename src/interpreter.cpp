@@ -165,9 +165,15 @@ var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & 
 
         if (std::holds_alternative<int>(base_value)) {
             if (std::holds_alternative<int>(source)) {
+                if (std::get<int>(source) == 0) {
+                    raise_ArithmeticError("Divide by zero", base.location());
+                }
                 return data_variant(std::get<int>(base_value) / std::get<int>(source));
             }
             else if (std::holds_alternative<double>(source)) {
+                if (std::get<double>(source) == 0) {
+                    raise_ArithmeticError("Divide by zero", base.location());
+                }
                 return data_variant(std::get<int>(base_value) / std::get<double>(source));
             }
             else {
@@ -176,9 +182,15 @@ var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & 
         }
         else if (std::holds_alternative<double>(base_value)) {
             if (std::holds_alternative<int>(source)) {
+                if (std::get<int>(source) == 0) {
+                    raise_ArithmeticError("Divide by zero", base.location());
+                }
                 return data_variant(std::get<double>(base_value) / std::get<int>(source));
             }
             else if (std::holds_alternative<double>(source)) {
+                if (std::get<double>(source) == 0) {
+                    raise_ArithmeticError("Divide by zero", base.location());
+                }
                 return data_variant(std::get<double>(base_value) / std::get<double>(source));
             }
             else {
