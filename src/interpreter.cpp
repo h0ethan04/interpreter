@@ -167,7 +167,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & 
             if (std::holds_alternative<int>(source)) {
                 return data_variant(std::get<int>(base_value) / std::get<int>(source));
             }
-            else if (std::holds_alternative<double>(base_value)) {
+            else if (std::holds_alternative<double>(source)) {
                 return data_variant(std::get<int>(base_value) / std::get<double>(source));
             }
             else {
@@ -275,7 +275,7 @@ var_map interpret_tokens(const std::vector<std::string> & lines, std::istream & 
                     variables[line[1].text()] = div_tokens(line[1], variables[line[2].text()]);
                 }
                 else {
-                    variables[line[1].text()] = div_tokens(line[1], 0);
+                    raise_ArithmeticError("Divide by zero", line[2].location());
                 }
             }
             else {
