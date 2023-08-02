@@ -106,7 +106,25 @@ To prevent infinite loops, the `END` command is designed to stop the program bef
 
 ## Conditionally Altering Control Flow:
 
-Control flow can be used to 
+Control flow can be applied conditionally, by applying a comparison afterwards. If the comparison evaluates to `TRUE` the jump will be completed; if the comparison evaluates to `FALSE` the jump will not be completed. To apply a condition, add `IF` followed by the comparison to the end of the `GOTO` or `GOSUB` statement.
+
+Example:
+
+`GOTO 'TARO' IF 1 = 1`
+
+Comparison Operators:
+
+Less than: `<`
+
+Greater than: `>`
+
+Less than or equal to: `<=`
+
+Greater than or equal to: `>=`
+
+Equal: `=`
+
+Not equal: `<>`
 
 ## Spacing:
 
