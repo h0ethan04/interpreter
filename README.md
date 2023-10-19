@@ -1,7 +1,7 @@
 # Language Interpreter
 Language Interpreter for Banh Mi
 
-This is an an esoteric interpreted language, based on one of the languages designed by one of my professors.
+This is an an esoteric interpreted language, based on one of the languages designed by one of my professors (and loosely resembling mips assembly).
 To prevent academic integrity violations I will not publicize the name of my professor (not that it would matter the design and overall structure of my interpreter doesn't follow the instructions).
 
 The following will be a guide to the language and its functionalities:
