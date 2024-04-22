@@ -54,8 +54,8 @@ TEST(LexingTests, DetectsSpecialChars) {
 }
 
 TEST(LexingTests, DetectsLiterals) {
-    assertOneToken("'BOO'", TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE), "'BOO'", "BOO");
-    assertOneToken("''", TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE), "''", "");
+    assertOneToken("\"BOO\"", TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE), "\"BOO\"", "BOO");
+    assertOneToken("\"\"", TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE), "\"\"", "");
     assertOneToken("1", TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE), "1", 1);
     assertOneToken("0", TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE), "0", 0);    
     assertOneToken("-1", TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE), "-1", -1);

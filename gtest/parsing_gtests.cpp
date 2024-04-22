@@ -29,7 +29,7 @@ TEST(ParsingTests, ParseEmptyFails) {
 
 TEST(ParsingTests, ParseNonKeywordFirstFails) {
     assertRaisesError(" 4 < 5");
-    assertRaisesError("'Boo'");
+    assertRaisesError("\"Boo\"");
 }
 
 TEST(ParsingVariableTests, ParseVariableUpdate) {
@@ -45,7 +45,7 @@ TEST(ParsingVariableTests, ParseVariableUpdate) {
 }
 
 TEST(ParsingVariableTests, ParseExtraFails) {
-    assertRaisesError("LET COLOR 'TARO' 19");
+    assertRaisesError("LET COLOR \"TARO\" 19");
 }
 
 TEST(ParsingVariableTests, ParseMissingTokensFails) {
@@ -54,7 +54,7 @@ TEST(ParsingVariableTests, ParseMissingTokensFails) {
 }
 
 TEST(ParsingVariableTests, ParseInvalidTargetFails) {
-    assertRaisesError("LET 'TARO' 'taro'");
+    assertRaisesError("LET \"TARO\" \"taro\"");
 }
 
 TEST(ParsingVariableTests, ParseInvalidSourceFails) {
@@ -62,7 +62,7 @@ TEST(ParsingVariableTests, ParseInvalidSourceFails) {
 }
 
 TEST(ParsingPrintTests, ParsePrint) {
-    std::vector<std::string> print{"PRINT TARO", "PRINT 19", "PRINT 100.00", "PRINT 'taro'"};
+    std::vector<std::string> print{"PRINT TARO", "PRINT 19", "PRINT 100.00", "PRINT \"taro\""};
     for(auto s: print) {
         assertParsesLine(s);
     }
@@ -104,7 +104,7 @@ TEST(ParsingInputTests, ParseInvalidTargetFails) {
 
 TEST(ParsingJumpTests, ParseJump) {
     std::vector<std::string> jump{"GOTO", "GOSUB"};
-    std::vector<std::string> targets{"19", "'TARO'", "taro"};
+    std::vector<std::string> targets{"19", "\"TARO\"", "taro"};
 
     for(auto j: jump) {
         for(auto t: targets) {
@@ -116,8 +116,8 @@ TEST(ParsingJumpTests, ParseJump) {
 
 TEST(ParsingJumpTests, ParseJumpWithCondition) {
     std::vector<std::string> jump{"GOTO", "GOSUB"};
-    std::vector<std::string> targets{"19", "'TARO'", "taro"};
-    std::vector<std::string> values{"19", "1.1", "'TARO'", "taro"};
+    std::vector<std::string> targets{"19", "\"TARO\"", "taro"};
+    std::vector<std::string> values{"19", "1.1", "\"TARO\"", "taro"};
     std::vector<std::string> ops{"=", "<>", "<", "<=", ">", ">="};
     std::string if_string{" IF "};
 
@@ -176,7 +176,7 @@ TEST(ParsingDot, ParsingEnds) {
 }
 
 TEST(ParsingLabel, ParsingLabel) {
-    std::vector<std::string> body{"LET TARO 19", "END", "PRINT 'TARO'"};
+    std::vector<std::string> body{"LET TARO 19", "END", "PRINT \"TARO\""};
     for(auto b: body) {
         std::string statement = "LABEL: " + b;
         assertParsesLine(statement);

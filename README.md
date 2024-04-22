@@ -9,7 +9,7 @@ The following will be a guide to the language and its functionalities:
 ## Types:
 
 There are three data types that this language supports: literal integers, literal doubles, and string literals. 
-Literal strings are indicated by enclosing *single* quotes `'` while integers and doubles are represented as normal.
+Literal strings are indicated by enclosing *double* quotes `"` while integers and doubles are represented as normal.
 
 ## Input/Output:
 
@@ -32,7 +32,7 @@ Examples:
 
 `LET Double 26.2`
 
-`LET String 'Matcha Latte'`
+`LET String "Matcha Latte"`
 
 Additionally, you can assign the value of a variable to that of another variable. The `Base` variable will be assigned a copy of the value that is stored in the `Source` variable.
 
@@ -98,7 +98,7 @@ There are two methods available to set the target:
 
 1. Provide an integer target. For example, `GOTO 11` will jump 11 lines forward, and `GOTO -3` jumps three lines backwards. A variable holding the integral value can be used as well.
 
-2. Provide a string target. For example, `GOTO 'TARO' ` jumps to the line labelled `'TARO'`. The string **must** be the name of an existing label. Execution will jump forwards or backward to that label.
+2. Provide a string target. For example, `GOTO "TARO" ` jumps to the line labelled `"TARO"`. The string **must** be the name of an existing label. Execution will jump forwards or backward to that label.
 
 The `GOSUB` command functions identically to the `GOTO` command, with one exception. If a `RETURN` command is encountered **after** a `GOSUB` command has been executed, execution will return to the `GOSUB` statement and continue on the line directly following it. Multiple `GOSUB` commands can be in play and execution returns to the one most recently executed. If a `RETURN` statement is encountered but there is no matching `GOSUB` command, an error will occur. 
 
@@ -110,7 +110,7 @@ Control flow can be applied conditionally, by applying a comparison afterwards. 
 
 Example:
 
-`GOTO 'TARO' IF 1 = 1`
+`GOTO "TARO" IF 1 = 1`
 
 Comparison Operators:
 
@@ -130,3 +130,15 @@ Not equal: `<>`
 
 This language is unique because I have tokenized all of the significant inputs.
 As a result, the language ignores excessive whitespace -- a minimum of one space is required to separate elements such as `LET`, `DIV`, variable names, literal values, etc.
+
+# Usage and Installation
+
+If you want to run this, clone this install gcc 13+, cmake 3.20+, then run the following two commands:
+
+`cmake --preset optimize`
+
+followed by:
+
+`cmake --build build`
+
+then you should be able to run the program via `./build/main`

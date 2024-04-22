@@ -31,7 +31,7 @@ TEST(LetTests, AssignDouble) {
 
 TEST(LetTests, AssignString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines {"LET A 'TARO'", "."};
+    std::vector<std::string> lines {"LET A \"TARO\"", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "TARO";
     ASSERT_EQ(interpret_tokens(lines, in, out), var);
@@ -57,7 +57,7 @@ TEST(LetTests, AssignVariableDouble) {
 
 TEST(LetTests, AssignVariableString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines {"LET A 'TARO'", "LET B A", "."};
+    std::vector<std::string> lines {"LET A \"TARO\"", "LET B A", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "TARO";
     var["B"] = "TARO";
@@ -66,7 +66,7 @@ TEST(LetTests, AssignVariableString) {
 
 TEST(LetTests, ReassignInt) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines {"LET A 'TARO'", "LET B 1", "LET A B", "."};
+    std::vector<std::string> lines {"LET A \"TARO\"", "LET B 1", "LET A B", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = 1;
     var["B"] = 1;
@@ -84,7 +84,7 @@ TEST(LetTests, ReassignDouble) {
 
 TEST(LetTests, ReassignString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines {"LET A 1", "LET B 'TARO'", "LET A B", "."};
+    std::vector<std::string> lines {"LET A 1", "LET B \"TARO\"", "LET A B", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "TARO";
     var["B"] = "TARO";
@@ -112,7 +112,7 @@ TEST(AdditionTests, AddDouble) {
 
 TEST(AdditionTests, AddStrings) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'TARO'", "ADD A ' MILK TEA'", "."};
+    std::vector<std::string> lines{"LET A \"TARO\"", "ADD A \" MILK TEA\"", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "TARO MILK TEA";
     ASSERT_EQ(interpret_tokens(lines, in, out), var);
@@ -138,7 +138,7 @@ TEST(AdditionTests, AddDoubleVariable) {
 
 TEST(AdditionTests, AddStringVariable) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'MATCHA'", "LET B ' LATTE'", "ADD A B", "."};
+    std::vector<std::string> lines{"LET A \"MATCHA\"", "LET B \" LATTE\"", "ADD A B", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "MATCHA LATTE";
     var["B"] = " LATTE";
@@ -147,13 +147,13 @@ TEST(AdditionTests, AddStringVariable) {
 
 TEST(AdditionTests, AddIntStringVariable) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 1", "LET B ' latte'", "ADD A B", "."};
+    std::vector<std::string> lines{"LET A 1", "LET B \" latte\"", "ADD A B", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
 TEST(AdditionTests, AddDoubleStringVariable) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 1.1", "LET B ' latte'", "ADD A B", "."};
+    std::vector<std::string> lines{"LET A 1.1", "LET B \" latte\"", "ADD A B", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
@@ -197,13 +197,13 @@ TEST(SubtractionTests, SubtractDoubleVariable) {
 
 TEST(SubtractionTests, SubtractString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 2", "SUB A 'TARO'", "."};
+    std::vector<std::string> lines{"LET A 2", "SUB A \"TARO\"", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
 TEST(SubtractionTests, SubtractStringVariable) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'TARO'", "LET B 'MILK'", "SUB A B", "."};
+    std::vector<std::string> lines{"LET A \"TARO\"", "LET B \"MILK\"", "SUB A B", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 }
@@ -229,7 +229,7 @@ TEST(MultiplicationTests, MultiplyDouble) {
 
 TEST(MultiplicationTests, MultiplyIntString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'Taro'", "MULT A 2", "."};
+    std::vector<std::string> lines{"LET A \"Taro\"", "MULT A 2", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "TaroTaro";
     ASSERT_EQ(interpret_tokens(lines, in, out), var);
@@ -237,19 +237,19 @@ TEST(MultiplicationTests, MultiplyIntString) {
 
 TEST(MultiplicationTests, MultiplyDoubleString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'Taro'", "MULT A 2.1", "."};
+    std::vector<std::string> lines{"LET A \"Taro\"", "MULT A 2.1", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
 TEST(MultiplicationTests, MultiplyNegIntString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'Taro'", "MULT A -1", "."};
+    std::vector<std::string> lines{"LET A \"Taro\"", "MULT A -1", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
 TEST(MultiplicationTests, MultiplyStringDouble) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 2.1", "MULT A 'TARO'", "."};
+    std::vector<std::string> lines{"LET A 2.1", "MULT A \"TARO\"", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
@@ -273,7 +273,7 @@ TEST(MultiplicationTests, MultiplyDoubleVariable) {
 
 TEST(MultiplicationTests, MultiplyStringVariable) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'TARO'", "LET B 2", "MULT A B", "."};
+    std::vector<std::string> lines{"LET A \"TARO\"", "LET B 2", "MULT A B", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = "TAROTARO";
     var["B"] = 2;
@@ -302,7 +302,7 @@ TEST(DivisionTests, DivideDouble) {
 
 TEST(DivisionTests, DivideString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'TARO'", "DIV A 2", "."};
+    std::vector<std::string> lines{"LET A \"TARO\"", "DIV A 2", "."};
     ASSERT_THROW(std::stringstream in;interpret_tokens(lines, in, out), ArithmeticError);
 }
 
@@ -347,7 +347,7 @@ TEST(GotoTests, JumpOne) {
 
 TEST(GotoTests, JumpBackwards) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 4", "GOTO 'X' IF 'A' < 'B'",  "END", "X: DIV A 4", "GOTO -2 IF 5 > A", "ADD A 11", "."};
+    std::vector<std::string> lines{"LET A 4", "GOTO \"X\" IF \"A\" < \"B\"",  "END", "X: DIV A 4", "GOTO -2 IF 5 > A", "ADD A 11", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = 1;
     ASSERT_EQ(interpret_tokens(lines, in, out), var);
@@ -385,7 +385,7 @@ TEST(GosubTests, JumpOne) {
 
 TEST(GosubTests, JumpBackwards) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 4", "GOSUB 'x' IF 'A' < 'B'",  "END", "x: DIV A 4", "GOSUB -2 IF 5 > A", "ADD A 11", "."};
+    std::vector<std::string> lines{"LET A 4", "GOSUB \"x\" IF \"A\" < \"B\"",  "END", "x: DIV A 4", "GOSUB -2 IF 5 > A", "ADD A 11", "."};
     std::map<std::string, data_variant> var{};
     var["A"] = 1;
     ASSERT_EQ(interpret_tokens(lines, in, out), var);
@@ -445,14 +445,14 @@ TEST(PrintTests, PrintDoubleVar) {
 
 TEST(PrintTests, PrintString) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"PRINT 'taro'", "."};
+    std::vector<std::string> lines{"PRINT \"taro\"", "."};
     interpret_tokens(lines, in, out);
     ASSERT_EQ(out.str(), "taro\n");
 }
 
 TEST(PrintTests, PrintStringVar) {
     std::stringstream out; std::stringstream in;
-    std::vector<std::string> lines{"LET A 'taro'", "PRINT A", "."};
+    std::vector<std::string> lines{"LET A \"taro\"", "PRINT A", "."};
     interpret_tokens(lines, in, out);
     ASSERT_EQ(out.str(), "taro\n");
 }
