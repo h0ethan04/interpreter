@@ -59,10 +59,10 @@ std::vector<Token> to_tokens(const std::string & line, int line_number) {
                 line_to_tokens.push_back(make_token(TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER), substring));
             }
         }
-        else if (line[index] == '\'') {
+        else if (line[index] == '\"') {
             ++index;
 
-            while (index < len && line[index] != '\'') {
+            while (index < len && line[index] != '\"') {
                 ++index;
             }
 
