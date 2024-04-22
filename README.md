@@ -1,5 +1,5 @@
 # Language Interpreter
-Language Interpreter for Banh Mi
+Language Interpreter
 
 This is an an esoteric interpreted language, based on one of the languages designed by one of my professors.
 To prevent academic integrity violations I will not publicize the name of my professor (not that it would matter the design and overall structure of my interpreter doesn't follow the instructions).

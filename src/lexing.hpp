@@ -15,20 +15,20 @@
 
 class LexingError : public std::exception {
 public:
-    LexingError(const std::string & msg, const GrinLocation & loc);
-    GrinLocation location() const;
+    LexingError(const std::string & msg, const Location & loc);
+    Location location() const;
     virtual const char* what() const noexcept override;
 
 private:
     std::string message;
-    GrinLocation error_location;
+    Location error_location;
 };
 
 
 
-void raise_error(const std::string & msg, const GrinLocation & loc);
+void raise_error(const std::string & msg, const Location & loc);
 
-std::vector<GrinToken> to_tokens(const std::string & line, int line_number);
+std::vector<Token> to_tokens(const std::string & line, int line_number);
 
 
 #endif

@@ -9,7 +9,7 @@ void assertEmpty(std::string line) {
     ASSERT_EQ(l.size(), 0);
 }
 
-void assertOneToken(std::string line, GrinTokenKind kind, std::string text, 
+void assertOneToken(std::string line, TokenKind kind, std::string text, 
                     std::variant<int, double, std::string> value) {
     auto token = to_tokens(line, 1);
     ASSERT_EQ(token.size(), 1);
@@ -23,44 +23,44 @@ TEST(LexingTests, StartsEmpty) {
 }
 
 TEST(LexingTests, DetectsKeywords) {
-    assertOneToken("ADD", GrinTokenKind(GrinTokenKindName::ADD, GrinTokenCategory::KEYWORD), "ADD", "ADD");
-    assertOneToken("DIV", GrinTokenKind(GrinTokenKindName::DIV, GrinTokenCategory::KEYWORD), "DIV", "DIV");
-    assertOneToken("END", GrinTokenKind(GrinTokenKindName::END, GrinTokenCategory::KEYWORD), "END", "END");
-    assertOneToken("GOSUB", GrinTokenKind(GrinTokenKindName::GOSUB, GrinTokenCategory::KEYWORD), "GOSUB", "GOSUB");
-    assertOneToken("GOTO", GrinTokenKind(GrinTokenKindName::GOTO, GrinTokenCategory::KEYWORD), "GOTO", "GOTO");
-    assertOneToken("IF", GrinTokenKind(GrinTokenKindName::IF, GrinTokenCategory::KEYWORD), "IF", "IF");
-    assertOneToken("INNUM", GrinTokenKind(GrinTokenKindName::INNUM, GrinTokenCategory::KEYWORD), "INNUM", "INNUM");
-    assertOneToken("INSTR", GrinTokenKind(GrinTokenKindName::INSTR, GrinTokenCategory::KEYWORD), "INSTR", "INSTR");
-    assertOneToken("LET", GrinTokenKind(GrinTokenKindName::LET, GrinTokenCategory::KEYWORD), "LET", "LET");
-    assertOneToken("MULT", GrinTokenKind(GrinTokenKindName::MULT, GrinTokenCategory::KEYWORD), "MULT", "MULT");
-    assertOneToken("PRINT", GrinTokenKind(GrinTokenKindName::PRINT, GrinTokenCategory::KEYWORD), "PRINT", "PRINT");
-    assertOneToken("RETURN", GrinTokenKind(GrinTokenKindName::RETURN, GrinTokenCategory::KEYWORD), "RETURN", "RETURN");
-    assertOneToken("SUB", GrinTokenKind(GrinTokenKindName::SUB, GrinTokenCategory::KEYWORD), "SUB", "SUB");
+    assertOneToken("ADD", TokenKind(TokenKindName::ADD, TokenCategory::KEYWORD), "ADD", "ADD");
+    assertOneToken("DIV", TokenKind(TokenKindName::DIV, TokenCategory::KEYWORD), "DIV", "DIV");
+    assertOneToken("END", TokenKind(TokenKindName::END, TokenCategory::KEYWORD), "END", "END");
+    assertOneToken("GOSUB", TokenKind(TokenKindName::GOSUB, TokenCategory::KEYWORD), "GOSUB", "GOSUB");
+    assertOneToken("GOTO", TokenKind(TokenKindName::GOTO, TokenCategory::KEYWORD), "GOTO", "GOTO");
+    assertOneToken("IF", TokenKind(TokenKindName::IF, TokenCategory::KEYWORD), "IF", "IF");
+    assertOneToken("INNUM", TokenKind(TokenKindName::INNUM, TokenCategory::KEYWORD), "INNUM", "INNUM");
+    assertOneToken("INSTR", TokenKind(TokenKindName::INSTR, TokenCategory::KEYWORD), "INSTR", "INSTR");
+    assertOneToken("LET", TokenKind(TokenKindName::LET, TokenCategory::KEYWORD), "LET", "LET");
+    assertOneToken("MULT", TokenKind(TokenKindName::MULT, TokenCategory::KEYWORD), "MULT", "MULT");
+    assertOneToken("PRINT", TokenKind(TokenKindName::PRINT, TokenCategory::KEYWORD), "PRINT", "PRINT");
+    assertOneToken("RETURN", TokenKind(TokenKindName::RETURN, TokenCategory::KEYWORD), "RETURN", "RETURN");
+    assertOneToken("SUB", TokenKind(TokenKindName::SUB, TokenCategory::KEYWORD), "SUB", "SUB");
 }
 
 TEST(LexingTests, DetectsNonKeywords) {
-    assertOneToken("HELLO", GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER), "HELLO", "HELLO");
+    assertOneToken("HELLO", TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER), "HELLO", "HELLO");
 }
 
 TEST(LexingTests, DetectsSpecialChars) {
-    assertOneToken(":", GrinTokenKind(GrinTokenKindName::COLON, GrinTokenCategory::PUNCTUATION), ":", ":");
-    assertOneToken(".", GrinTokenKind(GrinTokenKindName::DOT, GrinTokenCategory::PUNCTUATION), ".", ".");
-    assertOneToken("<", GrinTokenKind(GrinTokenKindName::LESS_THAN, GrinTokenCategory::COMPARISON_OPERATOR), "<", "<");
-    assertOneToken("<>", GrinTokenKind(GrinTokenKindName::NOT_EQUAL, GrinTokenCategory::COMPARISON_OPERATOR), "<>", "<>");
-    assertOneToken("<=", GrinTokenKind(GrinTokenKindName::LESS_THAN_OR_EQUAL, GrinTokenCategory::COMPARISON_OPERATOR), "<=", "<=");
-    assertOneToken(">", GrinTokenKind(GrinTokenKindName::GREATER_THAN, GrinTokenCategory::COMPARISON_OPERATOR), ">", ">");
-    assertOneToken(">=", GrinTokenKind(GrinTokenKindName::GREATER_THAN_OR_EQUAL, GrinTokenCategory::COMPARISON_OPERATOR), ">=", ">=");
-    assertOneToken("=", GrinTokenKind(GrinTokenKindName::EQUAL, GrinTokenCategory::COMPARISON_OPERATOR), "=", "=");
+    assertOneToken(":", TokenKind(TokenKindName::COLON, TokenCategory::PUNCTUATION), ":", ":");
+    assertOneToken(".", TokenKind(TokenKindName::DOT, TokenCategory::PUNCTUATION), ".", ".");
+    assertOneToken("<", TokenKind(TokenKindName::LESS_THAN, TokenCategory::COMPARISON_OPERATOR), "<", "<");
+    assertOneToken("<>", TokenKind(TokenKindName::NOT_EQUAL, TokenCategory::COMPARISON_OPERATOR), "<>", "<>");
+    assertOneToken("<=", TokenKind(TokenKindName::LESS_THAN_OR_EQUAL, TokenCategory::COMPARISON_OPERATOR), "<=", "<=");
+    assertOneToken(">", TokenKind(TokenKindName::GREATER_THAN, TokenCategory::COMPARISON_OPERATOR), ">", ">");
+    assertOneToken(">=", TokenKind(TokenKindName::GREATER_THAN_OR_EQUAL, TokenCategory::COMPARISON_OPERATOR), ">=", ">=");
+    assertOneToken("=", TokenKind(TokenKindName::EQUAL, TokenCategory::COMPARISON_OPERATOR), "=", "=");
 }
 
 TEST(LexingTests, DetectsLiterals) {
-    assertOneToken("'BOO'", GrinTokenKind(GrinTokenKindName::LITERAL_STRING, GrinTokenCategory::LITERAL_VALUE), "'BOO'", "BOO");
-    assertOneToken("''", GrinTokenKind(GrinTokenKindName::LITERAL_STRING, GrinTokenCategory::LITERAL_VALUE), "''", "");
-    assertOneToken("1", GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE), "1", 1);
-    assertOneToken("0", GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE), "0", 0);    
-    assertOneToken("-1", GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE), "-1", -1);
-    assertOneToken("0.5", GrinTokenKind(GrinTokenKindName::LITERAL_DOUBLE, GrinTokenCategory::LITERAL_VALUE), "0.5", 0.5);
-    assertOneToken("-0.1", GrinTokenKind(GrinTokenKindName::LITERAL_DOUBLE, GrinTokenCategory::LITERAL_VALUE), "-0.1", -0.1);
+    assertOneToken("'BOO'", TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE), "'BOO'", "BOO");
+    assertOneToken("''", TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE), "''", "");
+    assertOneToken("1", TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE), "1", 1);
+    assertOneToken("0", TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE), "0", 0);    
+    assertOneToken("-1", TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE), "-1", -1);
+    assertOneToken("0.5", TokenKind(TokenKindName::LITERAL_DOUBLE, TokenCategory::LITERAL_VALUE), "0.5", 0.5);
+    assertOneToken("-0.1", TokenKind(TokenKindName::LITERAL_DOUBLE, TokenCategory::LITERAL_VALUE), "-0.1", -0.1);
 }
 
 TEST(LexingTests, LexesMultipleTokens) {
@@ -77,7 +77,7 @@ TEST(LexingTests, LexesMultipleTokens) {
     ASSERT_EQ(tokens.at(2).value(), three_val);
     ASSERT_EQ(std::get<int>(tokens.at(2).value()), 3);
 
-    ASSERT_EQ(tokens.at(0).kind(), GrinTokenKind(GrinTokenKindName::LET, GrinTokenCategory::KEYWORD));
-    ASSERT_EQ(tokens.at(1).kind(), GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER));
-    ASSERT_EQ(tokens.at(2).kind(), GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE));
+    ASSERT_EQ(tokens.at(0).kind(), TokenKind(TokenKindName::LET, TokenCategory::KEYWORD));
+    ASSERT_EQ(tokens.at(1).kind(), TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER));
+    ASSERT_EQ(tokens.at(2).kind(), TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE));
 }

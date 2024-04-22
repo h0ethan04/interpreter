@@ -170,7 +170,7 @@ TEST(ParsingSingleStatements, ParseReturnAndEnd) {
 
 TEST(ParsingDot, ParsingEnds) {
     std::vector<std::string> cutoff{"RETURN", ".", "RETURN"};
-    std::vector<std::vector<GrinToken>> parsed = parse(cutoff);
+    std::vector<std::vector<Token>> parsed = parse(cutoff);
     ASSERT_EQ(parsed.size(), 1);
     ASSERT_EQ(parsed[0].size(), 1);
 }

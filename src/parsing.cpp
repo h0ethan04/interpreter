@@ -4,10 +4,10 @@
 #include "parsing.hpp"
 
 // Parsing Error
-ParsingError::ParsingError(const std::string & msg, const GrinLocation & loc)
+ParsingError::ParsingError(const std::string & msg, const Location & loc)
     : message(msg), error_location(loc){}
 
-GrinLocation ParsingError::location() const {
+Location ParsingError::location() const {
     return error_location;
 }
 
@@ -15,30 +15,30 @@ const char* ParsingError::what() const noexcept {
     return std::string(message + error_location.formatted()).c_str();
 }
 
-void raise_error(const std::string & msg, const GrinLocation & loc) {
+void raise_error(const std::string & msg, const Location & loc) {
     throw ParsingError(msg, loc);
 }
 
-void raise_error(const std::string & msg, const GrinToken & token) {
+void raise_error(const std::string & msg, const Token & token) {
     throw ParsingError(msg, token.location());
 }
 
 
 
-std::vector<GrinToken> parse_line(std::string line, int line_number) {
-    std::vector<GrinToken> tokens(to_tokens(line, line_number));
+std::vector<Token> parse_line(std::string line, int line_number) {
+    std::vector<Token> tokens(to_tokens(line, line_number));
     int index = 0;
 
     if (tokens.size() == 0) {
-        raise_error("Program lines cannot be empty", GrinLocation(line_number, 1));
+        raise_error("Program lines cannot be empty", Location(line_number, 1));
     }
     else if (tokens.size() == 1 &&
-             tokens[0].kind() == GrinTokenKind(GrinTokenKindName::DOT, GrinTokenCategory::KEYWORD)) {
+             tokens[0].kind() == TokenKind(TokenKindName::DOT, TokenCategory::KEYWORD)) {
         return tokens;
     }
     
     // helper parsing functions
-    auto detect_token = [&](std::vector<GrinTokenKind> kinds) {
+    auto detect_token = [&](std::vector<TokenKind> kinds) {
         if (index < tokens.size()) {
             for (auto k: kinds) {
                 if (tokens[index].kind().kind == k.kind) {
@@ -49,7 +49,7 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
         return false;
     };
 
-    auto expect = [&](std::vector<GrinTokenKind> kinds){
+    auto expect = [&](std::vector<TokenKind> kinds){
         if (!detect_token(kinds)) {
             std::string msg = "";
             int i = 0;
@@ -60,7 +60,7 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
             msg.append(token_kind_text[static_cast<int>(kinds[i].kind)]);
 
             if (index >= tokens.size()) {
-                raise_error(msg, GrinLocation(line_number, index));
+                raise_error(msg, Location(line_number, index));
             }
             else {
                 raise_error(msg, tokens[index].location());
@@ -70,25 +70,25 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
     };
 
     auto parse_label = [&](){
-        if (detect_token(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER)})) {
+        if (detect_token(std::vector<TokenKind>{TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER)})) {
             ++index;
-            expect(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::COLON, GrinTokenCategory::PUNCTUATION)});
+            expect(std::vector<TokenKind>{TokenKind(TokenKindName::COLON, TokenCategory::PUNCTUATION)});
             ++index;
         };
     };
 
     auto parse_value = [&](){
-        expect(std::vector<GrinTokenKind>{
-            GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE),
-            GrinTokenKind(GrinTokenKindName::LITERAL_DOUBLE, GrinTokenCategory::LITERAL_VALUE),
-            GrinTokenKind(GrinTokenKindName::LITERAL_STRING, GrinTokenCategory::LITERAL_VALUE),
-            GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER)
+        expect(std::vector<TokenKind>{
+            TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE),
+            TokenKind(TokenKindName::LITERAL_DOUBLE, TokenCategory::LITERAL_VALUE),
+            TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE),
+            TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER)
         });
         ++index;
     };
 
     auto parse_varirable = [&](){
-        expect(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER)});
+        expect(std::vector<TokenKind>{TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER)});
         ++index;
         parse_value();
     };
@@ -98,30 +98,30 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
     };
 
     auto parse_input = [&](){
-        expect(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER)});
+        expect(std::vector<TokenKind>{TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER)});
         ++index;
     };
 
     auto parse_target = [&](){
-        expect(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::LITERAL_INTEGER, GrinTokenCategory::LITERAL_VALUE),
-                                    GrinTokenKind(GrinTokenKindName::LITERAL_STRING, GrinTokenCategory::LITERAL_VALUE),
-                                    GrinTokenKind(GrinTokenKindName::IDENTIFIER, GrinTokenCategory::IDENTIFIER)});
+        expect(std::vector<TokenKind>{TokenKind(TokenKindName::LITERAL_INTEGER, TokenCategory::LITERAL_VALUE),
+                                    TokenKind(TokenKindName::LITERAL_STRING, TokenCategory::LITERAL_VALUE),
+                                    TokenKind(TokenKindName::IDENTIFIER, TokenCategory::IDENTIFIER)});
         ++index;
     };
     
     auto parse_comparison = [&](){
-        expect(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::EQUAL, GrinTokenCategory::COMPARISON_OPERATOR),
-                                          GrinTokenKind(GrinTokenKindName::LESS_THAN, GrinTokenCategory::COMPARISON_OPERATOR),
-                                          GrinTokenKind(GrinTokenKindName::LESS_THAN_OR_EQUAL, GrinTokenCategory::COMPARISON_OPERATOR),
-                                          GrinTokenKind(GrinTokenKindName::GREATER_THAN, GrinTokenCategory::COMPARISON_OPERATOR),
-                                          GrinTokenKind(GrinTokenKindName::GREATER_THAN_OR_EQUAL, GrinTokenCategory::COMPARISON_OPERATOR),
-                                          GrinTokenKind(GrinTokenKindName::NOT_EQUAL, GrinTokenCategory::COMPARISON_OPERATOR)});
+        expect(std::vector<TokenKind>{TokenKind(TokenKindName::EQUAL, TokenCategory::COMPARISON_OPERATOR),
+                                          TokenKind(TokenKindName::LESS_THAN, TokenCategory::COMPARISON_OPERATOR),
+                                          TokenKind(TokenKindName::LESS_THAN_OR_EQUAL, TokenCategory::COMPARISON_OPERATOR),
+                                          TokenKind(TokenKindName::GREATER_THAN, TokenCategory::COMPARISON_OPERATOR),
+                                          TokenKind(TokenKindName::GREATER_THAN_OR_EQUAL, TokenCategory::COMPARISON_OPERATOR),
+                                          TokenKind(TokenKindName::NOT_EQUAL, TokenCategory::COMPARISON_OPERATOR)});
         ++index;
     };
 
     auto parse_go = [&](){
         parse_target();
-        if (detect_token(std::vector<GrinTokenKind>{GrinTokenKind(GrinTokenKindName::IF, GrinTokenCategory::KEYWORD)})) {
+        if (detect_token(std::vector<TokenKind>{TokenKind(TokenKindName::IF, TokenCategory::KEYWORD)})) {
             ++index;
             parse_value();
             parse_comparison();
@@ -133,28 +133,28 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
 
     auto parse_body = [&](){
         auto t_kind = tokens[index].kind().kind;
-        if (t_kind == GrinTokenKindName::LET) {
+        if (t_kind == TokenKindName::LET) {
             ++index;
             parse_varirable();
         }
-        else if (t_kind == GrinTokenKindName::PRINT) {
+        else if (t_kind == TokenKindName::PRINT) {
             ++index;
             parse_print();
         }
-        else if (t_kind == GrinTokenKindName::INNUM || t_kind == GrinTokenKindName::INSTR) {
+        else if (t_kind == TokenKindName::INNUM || t_kind == TokenKindName::INSTR) {
             ++index;
             parse_input();
         }
-        else if (t_kind == GrinTokenKindName::ADD || t_kind == GrinTokenKindName::SUB 
-                 || t_kind == GrinTokenKindName::MULT || t_kind == GrinTokenKindName::DIV) {
+        else if (t_kind == TokenKindName::ADD || t_kind == TokenKindName::SUB 
+                 || t_kind == TokenKindName::MULT || t_kind == TokenKindName::DIV) {
             ++index;
             parse_varirable();
         }
-        else if (t_kind == GrinTokenKindName::GOTO || t_kind == GrinTokenKindName::GOSUB) {
+        else if (t_kind == TokenKindName::GOTO || t_kind == TokenKindName::GOSUB) {
             ++index;
             parse_go();
         }
-        else if (t_kind == GrinTokenKindName::RETURN || t_kind == GrinTokenKindName::END || t_kind == GrinTokenKindName::DOT) {
+        else if (t_kind == TokenKindName::RETURN || t_kind == TokenKindName::END || t_kind == TokenKindName::DOT) {
             ++index;
             parse_empty();
         }
@@ -165,7 +165,7 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
     parse_label();
     
     if (index >= tokens.size()) {
-        raise_error("Statement body expected", GrinLocation(line_number, line.size()));
+        raise_error("Statement body expected", Location(line_number, line.size()));
     }
 
     parse_body();
@@ -179,14 +179,14 @@ std::vector<GrinToken> parse_line(std::string line, int line_number) {
 }
 
 // public method that will be usable
-std::vector<std::vector<GrinToken>> parse(const std::vector<std::string> & lines) {
-    std::vector<std::vector<GrinToken>> parsed_tokens;
+std::vector<std::vector<Token>> parse(const std::vector<std::string> & lines) {
+    std::vector<std::vector<Token>> parsed_tokens;
 
     for(int i = 0; i < lines.size(); ++i) {
 
         auto tokens = parse_line(lines[i], i+1);  
         
-        if (tokens.size() == 1 && tokens[0].kind().kind == GrinTokenKindName::DOT) {
+        if (tokens.size() == 1 && tokens[0].kind().kind == TokenKindName::DOT) {
             break;
         }
 

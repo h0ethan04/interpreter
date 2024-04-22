@@ -12,8 +12,8 @@
 #include "location.hpp"
 
 
-enum struct GrinTokenCategory {
-    // A categorization of Grin tokens based on similar purposes
+enum struct TokenCategory {
+    // A categorization of tokens based on similar purposes
     COMPARISON_OPERATOR = 1,
     IDENTIFIER = 2,
     KEYWORD = 3,
@@ -23,7 +23,7 @@ enum struct GrinTokenCategory {
 
 extern const char* token_cat_text[];
 
-enum struct GrinTokenKindName {
+enum struct TokenKindName {
     ADD = 1,
     COLON = 2,
     DIV = 3,
@@ -53,45 +53,45 @@ enum struct GrinTokenKindName {
 
 extern const char* token_kind_text[];
 
-struct GrinTokenKind {
-    // Identifies a kind of Grin token
-    GrinTokenKindName kind;
-    GrinTokenCategory category;
+struct TokenKind {
+    // Identifies a kind of token
+    TokenKindName kind;
+    TokenCategory category;
 
-    bool operator==(const GrinTokenKind & other) const = default;
+    bool operator==(const TokenKind & other) const = default;
  };
 
 // token kind map
-extern std::unordered_map<std::string, std::pair<GrinTokenKindName, GrinTokenCategory>> TOKEN_MAP;
+extern std::unordered_map<std::string, std::pair<TokenKindName, TokenCategory>> TOKEN_MAP;
 
 void populate_token_kind_map();
 
 
 
-class GrinToken {
-    // Individual tokens in a Grin program
+class Token {
+    // Individual tokens in a program
 public:
     // constructor for different variants
-    GrinToken(const GrinTokenKind & tkind, const std::variant<int, double, std::string> & val, const std::string & txt, const GrinLocation & loc);
+    Token(const TokenKind & tkind, const std::variant<int, double, std::string> & val, const std::string & txt, const Location & loc);
     
-    GrinTokenKind kind() const;
+    TokenKind kind() const;
     
     std::variant<int, double, std::string> value() const;
 
     std::string text() const;
 
-    GrinLocation location() const;
+    Location location() const;
 
-    bool operator==(const GrinToken & other) const = default;
+    bool operator==(const Token & other) const = default;
 
-    friend std::ostream & operator<<(std::ostream & ostream, const GrinToken & token);
+    friend std::ostream & operator<<(std::ostream & ostream, const Token & token);
 
 private:
 
-    GrinTokenKind token_kind;
+    TokenKind token_kind;
     std::variant<int, double, std::string> token_value;
     std::string token_text;
-    GrinLocation token_location;
+    Location token_location;
 
 };
 

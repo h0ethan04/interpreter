@@ -17,7 +17,7 @@ TEST(InputTests, ReadingIstreams) {
 TEST(LabelTests, LabelsMappedToLines) {
     std::vector<std::string> lines{"LABEL: PRINT 0", "LET X 0", "ALSOALABEL: INSTR X", "."};
     
-    std::vector<std::vector<GrinToken>> tokenized{parse(lines)};
+    std::vector<std::vector<Token>> tokenized{parse(lines)};
     std::map<std::string, int> output(map_labels(tokenized));
 
     std::pair<std::string, int> line_zero{"LABEL", 0};

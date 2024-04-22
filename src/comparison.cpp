@@ -5,10 +5,10 @@
 
 typedef std::variant<int, double, std::string> data_variant;
 
-bool less_than(const GrinToken & left_token, const GrinToken & right_token, const std::map<std::string, data_variant> & variables) {
+bool less_than(const Token & left_token, const Token & right_token, const std::map<std::string, data_variant> & variables) {
     data_variant left;
     data_variant right;
-    if (left_token.kind().kind == GrinTokenKindName::IDENTIFIER) {
+    if (left_token.kind().kind == TokenKindName::IDENTIFIER) {
         if (variables.contains(left_token.text())) {
             left = variables.at(left_token.text());
         }
@@ -20,7 +20,7 @@ bool less_than(const GrinToken & left_token, const GrinToken & right_token, cons
         left = left_token.value();
     }
 
-    if (right_token.kind().kind == GrinTokenKindName::IDENTIFIER) {
+    if (right_token.kind().kind == TokenKindName::IDENTIFIER) {
         if (variables.contains(right_token.text())) {
             right = variables.at(right_token.text());
         }
@@ -66,10 +66,10 @@ bool less_than(const GrinToken & left_token, const GrinToken & right_token, cons
 
 
 
-bool equal(const GrinToken & left_token, const GrinToken & right_token, const std::map<std::string, data_variant> & variables) {
+bool equal(const Token & left_token, const Token & right_token, const std::map<std::string, data_variant> & variables) {
         data_variant left;
     data_variant right;
-    if (left_token.kind().kind == GrinTokenKindName::IDENTIFIER) {
+    if (left_token.kind().kind == TokenKindName::IDENTIFIER) {
         if (variables.contains(left_token.text())) {
             left = variables.at(left_token.text());
         }
@@ -81,7 +81,7 @@ bool equal(const GrinToken & left_token, const GrinToken & right_token, const st
         left = left_token.value();
     }
 
-    if (right_token.kind().kind == GrinTokenKindName::IDENTIFIER) {
+    if (right_token.kind().kind == TokenKindName::IDENTIFIER) {
         if (variables.contains(right_token.text())) {
             right = variables.at(right_token.text());
         }
@@ -126,25 +126,25 @@ bool equal(const GrinToken & left_token, const GrinToken & right_token, const st
 }
 
 
-bool run_comparison(const std::vector<GrinToken> & line,
+bool run_comparison(const std::vector<Token> & line,
                     const std::map<std::string, data_variant> & variables) {
     auto comp = line[1].kind().kind;
-    if (comp == GrinTokenKindName::LESS_THAN) {
+    if (comp == TokenKindName::LESS_THAN) {
         return less_than(line[0], line[2], variables);
     }
-    else if (comp == GrinTokenKindName::GREATER_THAN) {
+    else if (comp == TokenKindName::GREATER_THAN) {
         return !(less_than(line[0], line[2], variables) || equal(line[0], line[2], variables));
     }
-    else if (comp == GrinTokenKindName::EQUAL) {
+    else if (comp == TokenKindName::EQUAL) {
         return equal(line[0], line[2], variables);
     }
-    else if (comp == GrinTokenKindName::NOT_EQUAL) {
+    else if (comp == TokenKindName::NOT_EQUAL) {
         return !equal(line[0], line[2], variables);
     }
-    else if (comp == GrinTokenKindName::LESS_THAN_OR_EQUAL) {
+    else if (comp == TokenKindName::LESS_THAN_OR_EQUAL) {
         return less_than(line[0], line[2], variables) || equal(line[0], line[2], variables);
     }
-    else if (comp == GrinTokenKindName::GREATER_THAN_OR_EQUAL) {
+    else if (comp == TokenKindName::GREATER_THAN_OR_EQUAL) {
         return !less_than(line[0], line[2], variables);
     }
     

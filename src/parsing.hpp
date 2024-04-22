@@ -14,16 +14,16 @@
 
 class ParsingError : public std::exception {
 public:
-    ParsingError(const std::string & msg, const GrinLocation & loc);
-    GrinLocation location() const;
+    ParsingError(const std::string & msg, const Location & loc);
+    Location location() const;
     virtual const char* what() const noexcept override;
 
 private:
     std::string message;
-    GrinLocation error_location;
+    Location error_location;
 };
 
-std::vector<std::vector<GrinToken>> parse(const std::vector<std::string> & lines);
+std::vector<std::vector<Token>> parse(const std::vector<std::string> & lines);
 
 
 #endif

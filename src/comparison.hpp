@@ -9,7 +9,7 @@
 #include "token.hpp"
 
 
-bool run_comparison(const std::vector<GrinToken> & line,
+bool run_comparison(const std::vector<Token> & line,
                     const std::map<std::string, std::variant<int, double, std::string>> & variables);
 
 
